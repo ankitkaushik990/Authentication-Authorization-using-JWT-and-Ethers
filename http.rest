@@ -1,0 +1,82 @@
+
+
+// api to register the super Admin 
+###
+POST http://localhost:8001/user/register
+Content-Type: application/json
+
+{
+    "name":"fgcvhbjn",
+    "email":"990@gmail.com",
+    "phone":"23456754321",
+    "secretCode":"abc"
+}
+
+// api to login - superAdmin , Admin , Employee
+###
+POST http://localhost:8001/user/login
+Content-Type: application/json
+
+{
+    "email":"jhguf@gmail.com",
+    "privatekey":"0x12f5ea676bb465a2b6888523f2c580f45d408ea386b0cb6bb0f5d8a8da371c3e"
+}
+
+// APi to add company - ONly superadmin is authorized 
+###
+POST http://localhost:8001/company/addcompany
+Content-Type: application/json
+
+{
+    "name":"a''s",
+    "description":"this is ak's company"
+}
+
+
+// APi to add admin only super Admin is authorized 
+###
+POST http://localhost:8001/admin/add
+Content-Type: application/json
+
+{
+    "name":"b",
+    "email":"jhguf@gmail.com",
+    "phone":"12345678",
+    "companyId":1
+}
+
+// api to add employee only admin is authorized 
+###
+POST http://localhost:8001/emp/addemp
+Content-Type: application/json
+
+{
+    "name":"pl",
+    "email":"l@gmail.com",
+    "phone":"12345678",
+    "companyId":1
+}
+
+//api to update details of employee only itself is authorized
+###
+PUT http://localhost:8001/emp/update
+Content-Type: application/json
+
+{
+    "name":"ut",
+    "phone":1234567890
+}
+
+// api to logout , logged in user 
+###
+GET http://localhost:8001/user/logout
+
+// get all company created by superAdmin 
+###
+GET http://localhost:8001/user/allcompany
+
+###
+//all employee in a company --- authorize to admin 
+GET http://localhost:8001/admin/allemp
+
+

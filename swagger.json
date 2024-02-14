@@ -1,0 +1,535 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ETHERS Project User API",
+    "version": "1.0.0",
+    "description": "API documentation for user functionality in the ETHERS project."
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001"
+    }
+  ],
+  "paths": {
+    "/user/login": {
+      "post": {
+        "summary": "User Login",
+        "description": "Endpoint for user login.",
+        "requestBody": {
+          "description": "User login credentials.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string",
+                    "example": "email@gmail.com"
+                  },
+                  "privatekey": {
+                    "type": "string",
+                    "example": "0x837379f18b1b603eb1f88a281c19e1dfnjv51459a1f3696ad20df89c32fde99a86"
+                  }
+                },
+                "required": ["email", "privatekey"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "User logged in successfully."
+          },
+          "401": {
+            "description": "Invalid credentials."
+          },
+          "403": {
+            "description": "User already logged in from this IP address and email."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/register": {
+      "post": {
+        "summary": "Register User",
+        "description": "Endpoint for registering a new superAdmin.",
+        "requestBody": {
+          "description": "User registration details.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "User Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "user@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "secretCode": {
+                    "type": "string",
+                    "example": "user123"
+                  }
+                },
+                "required": ["name", "email", "phone", "secretCode"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "superAdmin registered successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          },
+          "401": {
+            "description": "Unauthorized. Invalid secret code."
+          },
+          "409": {
+            "description": "superAdmin already exists."
+          },
+          "500": {
+            "description": "Internal Server Error."
+          }
+        }
+      }
+    },
+    "/user/logout": {
+      "get": {
+        "summary": "Logout User",
+        "description": "Endpoint for user to log out.",
+        "responses": {
+          "200": {
+            "description": "User logged out successfully."
+          },
+          "400": {
+            "description": "Something went wrong."
+          }
+        }
+      }
+    },
+    "/company/addcompany": {
+      "post": {
+        "summary": "Add Company",
+        "description": "Endpoint for creating a new company.",
+        "requestBody": {
+          "description": "Company details.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Company Name"
+                  },
+                  "description": {
+                    "type": "string",
+                    "example": "Company Description"
+                  }
+                },
+                "required": ["name", "description"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Company created successfully."
+          },
+          "400": {
+            "description": "Bad request."
+          }
+        }
+      }
+    },
+    "/admin/add": {
+      "post": {
+        "summary": "Add Admin",
+        "description": "Endpoint for creating a new admin.",
+        "requestBody": {
+          "description": "Admin details.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Admin Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "admin@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "companyId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["name", "email", "phone", "companyId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Admin created successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "admin": {
+                    "id": 1,
+                    "name": "Admin Name",
+                    "email": "admin@example.com",
+                    "phone": "1234567890",
+                    "companyId": 1
+                  },
+                  "privatekey": "0x837379f18b1b603eb1f88a281c19e1dfnjv51459a1f3696ad20df89c32fde99a86"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "1294",
+                    "message": "Admin not found"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "1294",
+                    "message": "Unauthorized- only admin can view list of employees"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "456",
+                    "message": "No employee found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emp/addemp": {
+      "post": {
+        "summary": "Add Employee",
+        "description": "Endpoint for creating a new employee.",
+        "requestBody": {
+          "description": "Employee details.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Employee Name"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "employee@example.com"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  },
+                  "companyId": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                },
+                "required": ["name", "email", "phone", "companyId"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee created successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "emp": {
+                    "id": 1,
+                    "name": "Employee Name",
+                    "email": "employee@example.com",
+                    "phone": "1234567890",
+                    "companyId": 1
+                  },
+                  "privatekey": "0x837379f18b1b603eb1f88a281c19e1dfnjv51459a1f3696ad20df89c32fde99a86"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "890",
+                    "message": "Employee already exists"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "199",
+                    "message": "Unauthorized - not Admin"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "120",
+                    "message": "Unauthorized to add emp. for this company"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emp/update": {
+      "put": {
+        "summary": "Update Employee",
+        "description": "Endpoint for updating employee information.",
+        "requestBody": {
+          "description": "Updated employee details.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "Updated Employee Name"
+                  },
+                  "phone": {
+                    "type": "string",
+                    "example": "1234567890"
+                  }
+                },
+                "required": ["name", "phone"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Employee information updated successfully.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "message": "information updated successfully"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "661",
+                    "message": "employee not found to update details"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "199",
+                    "message": "Unauthorized - not Admin"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "661",
+                    "message": "Internal Server Error"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/user/allcompany": {
+      "get": {
+        "summary": "Get All Companies",
+        "description": "Endpoint for retrieving all companies created by the logged-in user.",
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Company 1",
+                    "description": "Description of Company 1"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Company 2",
+                    "description": "Description of Company 2"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. No company found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "456",
+                    "message": "No company found"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "890",
+                    "message": "Unauthorized - SuperAdmin not found"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/allemp": {
+      "get": {
+        "summary": "Get All Employees",
+        "description": "Endpoint for retrieving all employees created by the logged-in admin.",
+        "responses": {
+          "200": {
+            "description": "Successful operation.",
+            "content": {
+              "application/json": {
+                "example": [
+                  {
+                    "id": 1,
+                    "name": "Employee 1",
+                    "email": "employee1@example.com",
+                    "phone": "1234567890"
+                  },
+                  {
+                    "id": 2,
+                    "name": "Employee 2",
+                    "email": "employee2@example.com",
+                    "phone": "9876543210"
+                  }
+                ]
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden. No employee found.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "456",
+                    "message": "No employee found"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized.",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": {
+                    "code": "199",
+                    "message": "Unauthorized - not Admin"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
